@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Result Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="container nav-inner">
+        <div class="brand">SRMS</div>
+        <div class="nav-quote">Success comes from hard work.</div>
+        <nav>
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#form" class="nav-link">Form</a>
+          <a href="#results" class="nav-link">Results</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="hero">
+        <div class="hero-bg">
+          <div class="float float-1"></div>
+          <div class="float float-2"></div>
+          <div class="float float-3"></div>
+        </div>
+        <div class="container hero-content">
+          <h1 class="title">Student Result Management System</h1>
+          <p class="subtitle">Manage academic records, calculate marks and grades, and generate reports — all in one intuitive platform. Our Student Result Management System eliminates manual errors, saves time, and ensures accurate, secure, and hassle-free result processing for schools and colleges.</p>
+          <a href="#form" class="btn btn-primary">Get Started</a>
+        </div>
+      </section>
+
+      <section id="form" class="form-section container">
+        <h2 class="section-title">Enter Student Details</h2>
+        <form id="result-form" class="card">
+          <div class="grid">
+            <div class="field">
+              <label for="name">Student Name</label>
+              <input id="name" name="name" type="text" placeholder="e.g., Alex Johnson" required />
+            </div>
+            <div class="field">
+              <label for="roll">Roll Number</label>
+              <input id="roll" name="roll" type="text" placeholder="e.g., 23CS1005" required />
+            </div>
+          </div>
+
+          <h3 class="subtle-heading">Marks (0 - 100)</h3>
+          <div class="grid">
+            <div class="field">
+              <label for="math">Mathematics</label>
+              <input id="math" name="math" type="number" min="0" max="100" placeholder="90" required />
+            </div>
+            <div class="field">
+              <label for="physics">Physics</label>
+              <input id="physics" name="physics" type="number" min="0" max="100" placeholder="85" required />
+            </div>
+            <div class="field">
+              <label for="chemistry">Chemistry</label>
+              <input id="chemistry" name="chemistry" type="number" min="0" max="100" placeholder="88" required />
+            </div>
+            <div class="field">
+              <label for="english">English</label>
+              <input id="english" name="english" type="number" min="0" max="100" placeholder="78" required />
+            </div>
+            <div class="field">
+              <label for="cs">Computer Science</label>
+              <input id="cs" name="cs" type="number" min="0" max="100" placeholder="92" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-accent">Calculate Result</button>
+        </form>
+      </section>
+
+      <section id="results" class="results-section container">
+        <h2 class="section-title">Result</h2>
+        <div id="result-card" class="card hidden">
+          <div class="result-header">
+            <div class="avatar">🎓</div>
+            <div>
+              <div class="result-name" id="res-name">—</div>
+              <div class="result-roll" id="res-roll">—</div>
+            </div>
+          </div>
+          <div class="result-stats">
+            <div class="stat">
+              <div class="stat-label">Total</div>
+              <div class="stat-value" id="res-total">—</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Percentage</div>
+              <div class="stat-value" id="res-percentage">—</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Grade</div>
+              <div class="stat-value" id="res-grade">—</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">Learning today, leading tomorrow. © <span id="year"></span></div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+
