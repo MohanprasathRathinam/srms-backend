@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: smsys-backend
+    env: java
+    plan: free
+    buildCommand: mvn clean package
+    startCommand: java -jar target/student-result-management-system-1.0.0.jar
+    envVars:
+      - key: PORT
+        value: 8080
+    healthCheckPath: /api/calculate?name=test&roll=test&math=90&physics=85&chemistry=88&english=78&cs=92
+
+
