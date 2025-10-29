@@ -3,8 +3,6 @@ package com.smsys.server;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -65,10 +63,7 @@ public class ResultServer {
                 
                 // Calculate result
                 ResultCalculator calculator = new ResultCalculator();
-                JSONObject result = calculator.calculateResult(params);
-                
-                // Send response
-                String response = result.toString();
+                String response = calculator.calculateResult(params);
                 exchange.getResponseHeaders().add("Content-Type", "application/json");
                 exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
                 

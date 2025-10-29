@@ -1,11 +1,10 @@
 package com.smsys.server;
 
-import org.json.JSONObject;
 import java.util.Map;
 
 public class ResultCalculator {
-    
-    public JSONObject calculateResult(Map<String, String> params) {
+
+    public String calculateResult(Map<String, String> params) {
         try {
             // Extract parameters
             String name = params.getOrDefault("name", "");
@@ -15,47 +14,47 @@ public class ResultCalculator {
             int chemistry = Integer.parseInt(params.getOrDefault("chemistry", "0"));
             int english = Integer.parseInt(params.getOrDefault("english", "0"));
             int cs = Integer.parseInt(params.getOrDefault("cs", "0"));
-            
+
             // Validate marks
-            if (math < 0 || math > 100 || physics < 0 || physics > 100 || 
-                chemistry < 0 || chemistry > 100 || english < 0 || english > 100 || 
+            if (math < 0 || math > 100 || physics < 0 || physics > 100 ||
+                chemistry < 0 || chemistry > 100 || english < 0 || english > 100 ||
                 cs < 0 || cs > 100) {
                 throw new IllegalArgumentException("Marks must be between 0 and 100");
             }
-            
+
             // Calculate total and percentage
             int total = math + physics + chemistry + english + cs;
             double percentage = (double) total / 5.0;
-            
+
             // Determine grade
             String grade = calculateGrade(percentage);
-            
-            // Create result JSON
-            JSONObject result = new JSONObject();
-            result.put("name", name);
-            result.put("rollNumber", roll);
-            result.put("total", total);
-            result.put("percentage", Math.round(percentage * 100.0) / 100.0);
-            result.put("grade", grade);
-            result.put("subjectsCount", 5);
-            result.put("maxMarksPerSubject", 100);
-            
-            // Add individual subject marks
-            JSONObject subjects = new JSONObject();
-            subjects.put("Mathematics", math);
-            subjects.put("Physics", physics);
-            subjects.put("Chemistry", chemistry);
-            subjects.put("English", english);
-            subjects.put("Computer Science", cs);
-            result.put("subjects", subjects);
-            
-            return result;
-            
+
+            // Build JSON string manually to avoid external dependency
+            StringBuilder sb = new StringBuilder();
+            sb.append('{');
+            sb.append("\"name\":\"").append(escapeJson(name)).append("\",");
+            sb.append("\"rollNumber\":\"").append(escapeJson(roll)).append("\",");
+            sb.append("\"total\":").append(total).append(',');
+            sb.append("\"percentage\":").append(String.format(java.util.Locale.US, "%.2f", percentage)).append(',');
+            sb.append("\"grade\":\"").append(escapeJson(grade)).append("\",");
+            sb.append("\"subjectsCount\":5,");
+            sb.append("\"maxMarksPerSubject\":100,");
+            sb.append("\"subjects\":{");
+            sb.append("\"Mathematics\":").append(math).append(',');
+            sb.append("\"Physics\":").append(physics).append(',');
+            sb.append("\"Chemistry\":").append(chemistry).append(',');
+            sb.append("\"English\":").append(english).append(',');
+            sb.append("\"Computer Science\":").append(cs);
+            sb.append('}');
+            sb.append('}');
+
+            return sb.toString();
+
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid marks format");
         }
     }
-    
+
     private String calculateGrade(double percentage) {
         if (percentage >= 90) return "A+";
         else if (percentage >= 80) return "A";
@@ -63,6 +62,28 @@ public class ResultCalculator {
         else if (percentage >= 60) return "C";
         else if (percentage >= 50) return "D";
         else return "F";
+    }
+
+    private String escapeJson(String s) {
+        if (s == null) return "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '"': sb.append("\\\""); break;
+                case '\\': sb.append("\\\\"); break;
+                case '\n': sb.append("\\n"); break;
+                case '\r': sb.append("\\r"); break;
+                case '\t': sb.append("\\t"); break;
+                default:
+                    if (c < 0x20) {
+                        sb.append(String.format("\\u%04x", (int)c));
+                    } else {
+                        sb.append(c);
+                    }
+            }
+        }
+        return sb.toString();
     }
 }
 
